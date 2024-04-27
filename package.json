@@ -9,18 +9,31 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@chakra-ui/react": "2.8.1",
+    "@emotion/react": "^11",
+    "@remixicon/react": "^4.2.0",
+    "@emotion/styled": "^11",
+    "dayjs": "^1.11.10",
+    "framer-motion": "^6",
+    "jose": "^5.2.4",
+    "lodash": "^4.17.21",
+    "next": "14.2.3",
     "react": "^18",
-    "react-dom": "^18",
-    "next": "14.2.3"
+    "react-dom": "^18"
   },
   "devDependencies": {
-    "typescript": "^5",
+    "@types/lodash": "^4.17.0",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
-    "postcss": "^8",
-    "tailwindcss": "^3.4.1",
+    "@vercel/kv": "0.2.1",
     "eslint": "^8",
-    "eslint-config-next": "14.2.3"
+    "eslint-config-next": "14.2.3",
+    "postcss": "^8",
+    "prettier": "3.2.5",
+    "prettier-plugin-organize-imports": "^3.2.4",
+    "tailwindcss": "^3.4.1",
+    "tailwind-scrollbar": "^3.1.0",
+    "typescript": "^5"
   }
 }
