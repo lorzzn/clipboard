@@ -1,7 +1,7 @@
 "use client"
 
 const App = () => {
-  return <div>hello</div>
+  return <div className="flex flex-col">hello</div>
 }
 
 export default App
