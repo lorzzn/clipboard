@@ -1,6 +1,5 @@
 import { withKeyPrefix } from "@/utils/key"
 import { mapStruct } from "@/utils/struct"
-import { assign, map, toArray, toNumber, toString } from "lodash"
 
 export type ClipboardEntity = {
   id: number

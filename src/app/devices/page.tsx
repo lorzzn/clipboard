@@ -1,7 +1,6 @@
 import Devices from "."
 
 const DevicesPage = () => {
-  
   return <Devices />
 }
 

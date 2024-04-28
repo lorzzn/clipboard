@@ -1,6 +1,4 @@
-
 const Devices = () => {
-  
   return <div>devices</div>
 }
 
