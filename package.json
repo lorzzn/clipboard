@@ -12,6 +12,7 @@
     "@emotion/react": "^11",
     "@emotion/styled": "^11",
     "@remixicon/react": "^4.2.0",
+    "@vercel/node": "^3.0.28",
     "chalk": "^5.3.0",
     "dayjs": "^1.11.10",
     "framer-motion": "^6",
@@ -47,6 +48,6 @@
     "string-width": "4.2.3"
   },
   "engines": {
-    "node": "18.x"
+    "node": "20.x"
   }
 }
