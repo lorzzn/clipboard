@@ -1,0 +1,15 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "/src/pkgs/node-backend/*",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/node-backend",
+      "dest": "/src/pkgs/node-backend/index.ts"
+    }
+  ]
+}

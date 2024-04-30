@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server"
-import { createSession, getSession, updateSession } from "./utils/jwt"
+import { createSession, getSession, updateSession } from "@/pkgs/jwt"
 
 export async function middleware(request: NextRequest) {
   const response = NextResponse.next()
