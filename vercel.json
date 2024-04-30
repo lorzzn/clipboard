@@ -2,14 +2,18 @@
   "version": 2,
   "builds": [
     {
-      "src": "/src/pkgs/node-backend/*",
-      "use": "@vercel/node"
+      "src": "/src/pkgs/nodejs-serverless-functions/*",
+      "use": "@vercel/node",
+      "config": {
+        "includeFiles": ["./**"],
+        "excludeFiles": "./tsconfig.json"
+      }
     }
   ],
   "routes": [
     {
-      "src": "/api/node-backend",
-      "dest": "/src/pkgs/node-backend/index.ts"
+      "src": "/api/nsf(/.*)?",
+      "dest": "/src/pkgs/nodejs-serverless-functions"
     }
   ]
 }

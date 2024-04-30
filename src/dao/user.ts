@@ -1,5 +1,5 @@
 import User, { UserEntity, UserEntityConfig } from "@/entity/user"
-import { getTokenExpireDate } from "@/pkgs/jwt"
+import { getTokenExpireDate } from "@/utils/jwt"
 import storage from "@/utils/storage"
 import { randomString } from "@/utils/string"
 import dayjs from "dayjs"

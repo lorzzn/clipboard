@@ -31,10 +31,12 @@ export async function decrypt(input: string): Promise<JWTSession> {
   return payload
 }
 
-export async function getSession() {
-  const session = cookies().get("session")?.value
-  if (!session) return null
-  return await decrypt(session)
+export async function getSession(mustExist: boolean = true, session = cookies().get("session")?.value) {
+  if (mustExist && !session) {
+    throw new Error("session not found")
+  } else {
+    return session && (await decrypt(session))
+  }
 }
 
 export async function createSession(request: NextRequest, response: NextResponse) {

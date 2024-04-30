@@ -1,6 +1,6 @@
 export function randomString(
   length: number,
-  prefix?: string,
+  prefix: string = "",
   chars: string = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789",
 ) {
   let result = ""

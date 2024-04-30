@@ -1,5 +1,6 @@
 import Layout from "@/layout"
 import theme from "@/theme"
+import Provider from "@/trpc/client/provider"
 import { ChakraProvider, ColorModeScript } from "@chakra-ui/react"
 import type { Metadata } from "next"
 import "./globals.css"
@@ -16,10 +17,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body suppressContentEditableWarning>
+      <body suppressHydrationWarning>
         <ColorModeScript initialColorMode={theme.config.initialColorMode} />
         <ChakraProvider>
-          <Layout>{children}</Layout>
+          <Provider>
+            <Layout>{children}</Layout>
+          </Provider>
         </ChakraProvider>
       </body>
     </html>
