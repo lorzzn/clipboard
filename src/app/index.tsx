@@ -1,13 +1,15 @@
 "use client"
 
+import cookie from "js-cookie"
 import { useEffect } from "react"
 import { createOrUpdateSession } from "./action"
-import cookie from 'js-cookie'
 
 const App = () => {
   const init = async () => {
     const res = await createOrUpdateSession()
-    cookie.set('session', res.session)
+    cookie.set("session", res.session, {
+      expires: new Date(res.user.expiresAt),
+    })
   }
 
   useEffect(() => {

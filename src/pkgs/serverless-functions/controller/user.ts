@@ -2,6 +2,7 @@ import { random, toNumber } from "lodash"
 import User from "../../../entity/user"
 import { randomString } from "../../../utils/string"
 import { HandlerFunction } from "../types"
+import { SessionResponse } from "../types/controller/user"
 import { encrypt, getSession, getTokenExpireDate } from "../utils/jwt"
 import storage from "../utils/storage"
 
@@ -38,7 +39,7 @@ export const createSession: HandlerFunction = async (request, response) => {
   response.status(200).json({
     user: user.data,
     session,
-  })
+  } as SessionResponse)
 }
 
 export const updateSession: HandlerFunction = async (request, response) => {
@@ -55,7 +56,7 @@ export const updateSession: HandlerFunction = async (request, response) => {
   response.status(200).json({
     user: user.data,
     session: await encrypt(session),
-  })
+  } as SessionResponse)
 }
 
 export const session: HandlerFunction = async (request, response) => {
