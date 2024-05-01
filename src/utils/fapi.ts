@@ -1,15 +1,18 @@
-import chalk from "chalk"
-import { set, toString } from "lodash"
+"use server"
+
+import { set } from "lodash"
 import { getBaseUrl } from "./url"
+import { cookies } from "next/headers";
 
 const baseUrl = getBaseUrl() + "/api/f"
 
-export const fapi = async (url: string, cookies?: string, options?: RequestInit) => {
+export const fapi = async (url: string, options?: RequestInit) => {
   try {
     if (!options) {
       options = {}
     }
-    set(options, "headers.cookie", toString(cookies))
+    // add cookies to request headers
+    set(options, "headers.cookie", cookies().toString())
     url = baseUrl + url
     const request = new Request(url, options)
     const fetchStartTime = performance.now()
@@ -18,14 +21,14 @@ export const fapi = async (url: string, cookies?: string, options?: RequestInit)
     console.log(
       "",
       request.method,
-      chalk.bgGreen.white("fapi"),
+      "fapi",
       response.url,
-      (response.ok ? chalk.green : chalk.red)(response.status),
+      response.status,
       "in",
-      chalk.white((performance.now() - fetchStartTime) | 0) + "ms",
+      ((performance.now() - fetchStartTime) | 0) + "ms",
     )
 
-    return response
+    return response as Response
   } catch (error) {
     console.error("Failed to fetch data from serverless functions")
     throw error

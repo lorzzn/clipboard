@@ -2,6 +2,9 @@
   "compilerOptions": {
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
-    "skipLibCheck": true
-  }
+    "skipLibCheck": true,
+    "paths": {
+      "@/*": ["./../../*"]
+    }
+  },
 }

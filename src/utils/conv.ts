@@ -42,7 +42,11 @@ class Conv {
     return toPlainObject(this.value)
   }
 
-  to<K extends "string" | "number" | "bigint" | "boolean" | "symbol" | "undefined" | "object">(type: K) {
+  toDate() {
+    return new Date(this.value)
+  }
+
+  to<K extends "string" | "number" | "bigint" | "boolean" | "symbol" | "undefined" | "object" | "Date">(type: K) {
     switch (type) {
       case "string":
         return this.toString()
@@ -64,6 +68,9 @@ class Conv {
 
       case "object":
         return this.toObject()
+      
+      case "Date":
+        return this.toDate()
 
       default:
         return this.value

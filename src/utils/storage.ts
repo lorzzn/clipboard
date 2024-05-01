@@ -1,8 +1,11 @@
 import { createStorage } from "unstorage"
-import memoryDriver from "unstorage/drivers/memory"
+import httpDriver from "unstorage/drivers/http"
+import { getBaseUrl } from "./url"
+
+const base = getBaseUrl() + "/api/f/redis"
 
 const storage = createStorage({
-  driver: memoryDriver(),
+  driver: httpDriver({ base }),
 })
 
 export default storage

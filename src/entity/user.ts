@@ -1,5 +1,5 @@
-import { withKeyPrefix } from "@/utils/key"
-import { mapStruct } from "@/utils/struct"
+import { withKeyPrefix } from "./../utils/key"
+import { mapStruct } from "./../utils/struct"
 import { UserEntity } from "./types/user"
 
 export type UserEntityConfig = {

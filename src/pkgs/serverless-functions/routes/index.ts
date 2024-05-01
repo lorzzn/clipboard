@@ -23,12 +23,14 @@ class Routes {
 
   createHandler() {
     return (request: VercelRequest, response: VercelResponse) => {
-      const func = this.routes.get(request.url)
-      if (func) {
-        func(request, response)
-      } else {
-        response.status(404).send("Not found")
+      for (const routePath of Array.from(this.routes.keys())) {
+        const regex = new RegExp(routePath)
+        if (regex.test(request.url)) {
+          this.routes.get(routePath)?.(request, response)
+          return
+        }
       }
+      response.status(404).send("Not found")
     }
   }
 }
