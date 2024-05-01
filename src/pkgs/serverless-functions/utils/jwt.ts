@@ -1,12 +1,14 @@
+import dayjs from "dayjs"
 import { JWTPayload, SignJWT, jwtVerify } from "jose"
 import { UserEntity } from "../../../entity/types/user"
-import dayjs from 'dayjs'
 
 export const secretKey = "a very secret key, definitely"
 export const key = new TextEncoder().encode(secretKey)
 
 export const tokenDuration = 3 * 60 // (s) 3 minutes
-export const getTokenExpireDate = () => dayjs().add(tokenDuration, "second").toDate()
+export const getTokenExpireDate = () => {
+  return dayjs().add(tokenDuration, "second").toDate()
+}
 
 export type JWTSession = {
   user: UserEntity
@@ -28,7 +30,7 @@ export async function decrypt(input: string): Promise<JWTSession> {
   return payload
 }
 
-export async function getToken(session: string, mustExist: boolean = true) {
+export async function getSession(session: string, mustExist: boolean = true) {
   if (mustExist && !session) {
     throw new Error("session not found")
   } else {
