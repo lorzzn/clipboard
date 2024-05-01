@@ -1,12 +1,12 @@
 import userDao from "@/dao/user"
-import { UserEntity } from "@/entity/user"
+import { UserEntity } from "@/entity/types/user"
 import dayjs from "dayjs"
 import { JWTPayload, SignJWT, jwtVerify } from "jose"
 import { cookies } from "next/headers"
 import { NextRequest, NextResponse, userAgent } from "next/server"
 
-const secretKey = "a very secret key, definitely"
-const key = new TextEncoder().encode(secretKey)
+export const secretKey = "a very secret key, definitely"
+export const key = new TextEncoder().encode(secretKey)
 
 export const tokenDuration = 3 * 60 // (s) 3 minutes
 export const getTokenExpireDate = () => dayjs().add(tokenDuration, "second").toDate()

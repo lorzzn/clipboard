@@ -1,15 +1,6 @@
 import { withKeyPrefix } from "@/utils/key"
 import { mapStruct } from "@/utils/struct"
-import { RequestData } from "next/dist/server/web/types"
-
-export type UserEntity = {
-  id: number
-  clipboardId: number
-  ip: string
-  ua: string
-  geo: RequestData["geo"]
-  expiresAt: Date
-}
+import { UserEntity } from "./types/user"
 
 export type UserEntityConfig = {
   [K in keyof UserEntity]?: any

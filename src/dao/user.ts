@@ -1,10 +1,11 @@
-import User, { UserEntity, UserEntityConfig } from "@/entity/user"
+import User, {  UserEntityConfig } from "@/entity/user"
 import { getTokenExpireDate } from "@/utils/jwt"
 import storage from "@/utils/storage"
 import { randomString } from "@/utils/string"
 import dayjs from "dayjs"
 import { random, toNumber } from "lodash"
 import clipboardDao from "./clipboard"
+import { UserEntity } from "@/entity/types/user"
 
 class UserDao {
   async generateUserId(): Promise<number> {
