@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "yarn vercel dev",
     "lint": "next lint",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "build": "next build"
   },
   "dependencies": {
     "@chakra-ui/react": "2.8.1",

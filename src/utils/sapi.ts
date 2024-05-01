@@ -1,12 +1,12 @@
 "use server"
 
 import { set } from "lodash"
-import { getBaseUrl } from "./url"
-import { cookies } from "next/headers";
+import { cookies } from "next/headers"
+import { userAgent } from "next/server"
 
-const baseUrl = getBaseUrl() + "/api/f"
+const baseUrl = process.env.SERVERLESS_BASEURL
 
-export const fapi = async (url: string, options?: RequestInit) => {
+export const sapi = async (url: string, options?: RequestInit) => {
   try {
     if (!options) {
       options = {}

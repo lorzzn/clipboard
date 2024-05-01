@@ -1,13 +1,17 @@
 "use server"
 
 import { SessionResponse } from "@/pkgs/serverless-functions/types/controller/user"
-import { fapi } from "@/utils/fapi"
+import { sapi } from "@/utils/sapi"
 
-export const createOrUpdateSession = async () => {
+export const session = async () => {
   try {
-    return (await fapi("/user/session")).json() as Promise<SessionResponse>
+    return (await sapi("/user/session")).json() as Promise<SessionResponse>
   } catch (error) {
     console.log(error)
     throw error
   }
+}
+
+export const getFApiBaseUrl = () => {
+  return process.env.SERVERLESS_BASEURL!
 }

@@ -34,6 +34,6 @@ export async function getSession(session: string, mustExist: boolean = true) {
   if (mustExist && !session) {
     throw new Error("session not found")
   } else {
-    return session && (await decrypt(session))
+    return await decrypt(session)
   }
 }

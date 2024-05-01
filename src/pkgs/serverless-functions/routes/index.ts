@@ -1,4 +1,5 @@
 import { VercelRequest, VercelResponse } from "@vercel/node"
+import { toString } from "lodash"
 import { HandlerFunction } from "../types"
 
 export type RoutesConfig = {
@@ -10,7 +11,7 @@ class Routes {
   routes: Map<string, HandlerFunction> = new Map()
 
   constructor(config: RoutesConfig = {}) {
-    this.baseUrl = config.baseUrl
+    this.baseUrl = toString(config.baseUrl)
   }
 
   private r(path: string) {
@@ -25,7 +26,7 @@ class Routes {
     return (request: VercelRequest, response: VercelResponse) => {
       for (const routePath of Array.from(this.routes.keys())) {
         const regex = new RegExp(routePath)
-        if (regex.test(request.url)) {
+        if (regex.test(toString(request.url))) {
           this.routes.get(routePath)?.(request, response)
           return
         }
@@ -35,8 +36,6 @@ class Routes {
   }
 }
 
-const routes = new Routes({
-  baseUrl: "/api/f",
-})
+const routes = new Routes({ baseUrl: "/api/f" })
 
 export default routes
