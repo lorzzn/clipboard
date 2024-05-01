@@ -12,7 +12,6 @@ class User {
     clipboardId: 0,
     ip: "",
     ua: "",
-    geo: {},
     expiresAt: new Date(0),
   }
 

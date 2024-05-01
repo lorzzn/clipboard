@@ -1,10 +1,9 @@
-import { serialize } from "cookie"
 import { random, toNumber } from "lodash"
+import User from "../../../entity/user"
 import { randomString } from "../../../utils/string"
 import { HandlerFunction } from "../types"
 import { encrypt, getToken as getSession, getTokenExpireDate } from "../utils/jwt"
 import storage from "../utils/storage"
-import User from "../../../entity/user"
 
 const generateUserId = async (): Promise<number> => {
   const sub = randomString(5, "", "1234567890")
@@ -30,7 +29,7 @@ export const creaetOrUpdateSession: HandlerFunction = async (request, response) 
   if (session) {
     isValid = await storage.hasItem(user.key)
   }
-  
+
   if (!isValid) {
     const user = new User({
       id: await generateUserId(),
@@ -44,12 +43,11 @@ export const creaetOrUpdateSession: HandlerFunction = async (request, response) 
       user: user.data,
       expires: user.data.expiresAt,
     })
-    
+
     response.status(200).json({
       user: user.data,
-      session
+      session,
     })
-
   } else {
     session.expires = getTokenExpireDate()
     const user = new User(session.user)
@@ -58,7 +56,7 @@ export const creaetOrUpdateSession: HandlerFunction = async (request, response) 
 
     response.status(200).json({
       user: user.data,
-      session: await encrypt(session)
+      session: await encrypt(session),
     })
   }
 }
