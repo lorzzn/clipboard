@@ -11,7 +11,3 @@ export const session = async () => {
     throw error
   }
 }
-
-export const getFApiBaseUrl = () => {
-  return process.env.SERVERLESS_BASEURL!
-}
