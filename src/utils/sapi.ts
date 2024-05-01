@@ -2,7 +2,6 @@
 
 import { set } from "lodash"
 import { cookies } from "next/headers"
-import { userAgent } from "next/server"
 
 const baseUrl = process.env.SERVERLESS_BASEURL
 
@@ -21,7 +20,7 @@ export const sapi = async (url: string, options?: RequestInit) => {
     console.log(
       "",
       request.method,
-      "fapi",
+      "sapi",
       response.url,
       response.status,
       "in",

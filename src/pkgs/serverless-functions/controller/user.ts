@@ -9,10 +9,14 @@ export const updateSession: HandlerFunction = async (request, response) => {
   response.status(200).json(await userServices.updateSession(request))
 }
 
-export const session: HandlerFunction = async (request, response) => {
+export const getSession: HandlerFunction = async (request, response) => {
   try {
     await updateSession(request, response)
   } catch (error) {
     await createSession(request, response)
   }
+}
+
+export const getClipboard: HandlerFunction = async (request, response) => {
+  response.status(200).json(await userServices.getClipboard(request))
 }

@@ -1,5 +1,6 @@
 import { VercelRequest } from "@vercel/node"
 import { random, toNumber } from "lodash"
+import { ClipboardResponse } from "../types/controller/clipboard"
 import { SessionResponse } from "../types/controller/user"
 import { encrypt, getSession, getTokenExpireDate, tokenDuration } from "../utils/jwt"
 import storage from "../utils/storage"
@@ -78,4 +79,11 @@ export const updateSession = async (request: VercelRequest): Promise<SessionResp
     user: user.data,
     session: await encrypt(session),
   }
+}
+
+export const getClipboard = async (request: VercelRequest): Promise<ClipboardResponse> => {
+  const session = await getSession(request.cookies.session)
+  const data = await clipboardService.getClipboard(session.user.clipboardId)
+
+  return data
 }

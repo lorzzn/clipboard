@@ -9,7 +9,11 @@ export function mapStruct(target: Struct, struct: Struct) {
     if (has(target, key)) {
       const constructor = Object.getPrototypeOf(target[key]).constructor
       if (constructor) {
-        target[key] = new constructor(struct[key])
+        if (constructor.from) {
+          target[key] = constructor.from(struct[key])
+        } else {
+          target[key] = new constructor(struct[key])
+        }
       }
     }
   }

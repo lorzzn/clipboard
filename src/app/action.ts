@@ -1,13 +1,9 @@
 "use server"
 
+import { ClipboardEntity } from "@/entity/clipboard"
 import { SessionResponse } from "@/pkgs/serverless-functions/types/controller/user"
 import { sapi } from "@/utils/sapi"
 
-export const session = async () => {
-  try {
-    return (await sapi("/user/session")).json() as Promise<SessionResponse>
-  } catch (error) {
-    console.log(error)
-    throw error
-  }
-}
+export const getSession = async () => (await sapi("/session")).json() as Promise<SessionResponse>
+
+export const getClipboard = async () => (await sapi(`/clipboard`)).json() as Promise<ClipboardEntity>
