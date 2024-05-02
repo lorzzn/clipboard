@@ -1,8 +1,9 @@
+import { withKeyPrefix } from "./../../../utils/key"
 import { VercelRequest } from "@vercel/node"
-import { random, toNumber } from "lodash"
+import { random, toNumber, toString } from "lodash"
 import { ClipboardResponse } from "../types/controller/clipboard"
 import { SessionResponse } from "../types/controller/user"
-import { encrypt, getSession, getTokenExpireDate, tokenDuration } from "../utils/jwt"
+import { encrypt, getSession, getTokenExpireDate, sessionBlacklistPrefix, tokenDuration } from "../utils/jwt"
 import storage from "../utils/storage"
 import User from "./../../../entity/user"
 import { randomString } from "./../../../utils/string"
@@ -52,7 +53,8 @@ export const createSession = async (request: VercelRequest): Promise<SessionResp
 }
 
 export const updateSession = async (request: VercelRequest): Promise<SessionResponse> => {
-  const session = await getSession(request.cookies.session)
+  const _session = request.cookies.session
+  const session = await getSession(_session)
   const user = new User(session.user)
   const ua = request.headers["user-agent"]
   const ip = request.headers["x-forwarded-for"]
@@ -75,6 +77,10 @@ export const updateSession = async (request: VercelRequest): Promise<SessionResp
     ttl: tokenDuration,
   })
 
+  await storage.setItem(withKeyPrefix(sessionBlacklistPrefix, _session), 1, {
+    ttl: tokenDuration,
+  })
+
   return {
     user: user.data,
     session: await encrypt(session),
@@ -86,4 +92,12 @@ export const getClipboard = async (request: VercelRequest): Promise<ClipboardRes
   const data = await clipboardService.getClipboard(session.user.clipboardId)
 
   return data
+}
+
+export const clipboardAction = async (request: VercelRequest): Promise<ClipboardResponse> => {
+  const session = await getSession(request.cookies.session)
+  const type = request.query.type as clipboardService.clipboardActionType
+  const text = Buffer.from(toString(request.query.data), "base64").toString("utf-8")
+
+  return await clipboardService.action(session.user.clipboardId, type, text)
 }

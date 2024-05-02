@@ -20,3 +20,7 @@ export const getSession: HandlerFunction = async (request, response) => {
 export const getClipboard: HandlerFunction = async (request, response) => {
   response.status(200).json(await userServices.getClipboard(request))
 }
+
+export const clipboardAction: HandlerFunction = async (request, response) => {
+  response.status(200).json(await userServices.clipboardAction(request))
+}

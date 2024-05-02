@@ -5,6 +5,8 @@ import storage from "../utils/storage"
 import Clipboard, { ClipboardEntity } from "./../../../entity/clipboard"
 import { randomString } from "./../../../utils/string"
 
+export type clipboardActionType = "add" | "delete" | "reset"
+
 const generateClipboardId = async (): Promise<number> => {
   const sub = randomString(5, "", "1234567890")
   const start = random(1, 9)
@@ -56,6 +58,38 @@ export const getClipboard = async (id: number): Promise<ClipboardEntity> => {
     })
   }
   clipboard.update(data)
+
+  return clipboard.data
+}
+
+export const action = async (id: number, type: clipboardActionType, text: string): Promise<ClipboardEntity> => {
+  const clipboard = new Clipboard({ id })
+  const target = await storage.getItem<ClipboardEntity>(clipboard.key)
+
+  if (!target) {
+    throw new RuntimeError({
+      message: "Clipboard not found",
+    })
+  }
+  clipboard.update(target)
+  let clipboardData = clipboard.data.data
+
+  switch (type) {
+    case "add":
+      clipboardData.push(text)
+      break
+
+    case "delete":
+      clipboardData = clipboardData.filter((item) => item !== text)
+      break
+
+    case "reset":
+      clipboardData = []
+      break
+  }
+  
+  clipboard.update({ data: clipboardData })
+  await storage.setItem(clipboard.key, clipboard.data)
 
   return clipboard.data
 }

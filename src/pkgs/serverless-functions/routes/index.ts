@@ -28,6 +28,7 @@ class Routes {
         const regex = new RegExp(routePath)
         if (regex.test(toString(request.url))) {
           this.routes.get(routePath)?.(request, response)
+          console.log("serverless-functions:", request.url, "->", routePath);
           return
         }
       }
