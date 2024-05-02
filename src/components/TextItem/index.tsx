@@ -8,6 +8,7 @@ import { throttle } from "lodash"
 import { useRef, useState } from "react"
 import { Else, If, Then, When } from "react-if"
 import * as appActions from "../../app/action"
+import TextPreview from "../TextPreview"
 
 export type TextItemProps = {
   index: number
@@ -128,7 +129,7 @@ const TextItem = ({ children, index, onDeleteSuccess }: TextItemProps) => {
             colorScheme="teal"
             className={twclx(["!justify-start !whitespace-normal !text-start break-all"])}
           >
-            {children}
+            <TextPreview value={children} />
           </CardBody>
         </Card>
       </motion.div>

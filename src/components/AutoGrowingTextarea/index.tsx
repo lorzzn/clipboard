@@ -1,6 +1,8 @@
 import { twclx } from "@/utils/twclx"
 import { css } from "@emotion/css"
+import { toString } from "lodash"
 import { CSSProperties, ComponentProps, useEffect, useState } from "react"
+import TextPreview from "../TextPreview"
 
 export interface AutoGrowingTextareaProps extends Omit<ComponentProps<"textarea">, "value"> {
   wordBreak?: CSSProperties["wordBreak"]
@@ -29,18 +31,15 @@ const AutoGrowingTextarea = ({
 
   return (
     <div className="relative">
-      <div
+      <TextPreview
+        value={toString(value)}
         className={twclx([
           baseCn,
           css`
             visibility: hidden;
           `,
         ])}
-      >
-        {value?.split("\n").map((line, index) => {
-          return [line.replace(/\t/g, "\u00A0\u00A0").replace(/\s/g, "\u00A0"), <br key={index} />]
-        })}
-      </div>
+      />
       <textarea
         className={twclx([baseCn, "!absolute inset-0"])}
         value={value}
