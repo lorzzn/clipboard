@@ -1,16 +1,15 @@
-import { UserClipboardEntity } from "@/entity/userClipboard"
 import { UserEntity } from "@/entity/types/user"
+import { UserData } from "@/pkgs/serverless-functions/types/controller/user"
+import cookie from "js-cookie"
 import { create } from "zustand"
 import * as appActions from "../app/action"
 
 type UserStoreType = {
-  user: UserEntity
+  user: UserData
   loading: boolean
   setUser: (user: UserEntity) => void
+  getUser: () => Promise<void>
   setLoading: (loading: boolean) => void
-  clipboard: UserClipboardEntity
-  setClipboard: (clipboard: UserClipboardEntity) => void
-  getClipboard: () => Promise<void>
 }
 
 const useUserStore = create<UserStoreType>((set) => ({
@@ -22,27 +21,19 @@ const useUserStore = create<UserStoreType>((set) => ({
     ua: "",
   },
   loading: true,
-  clipboard: {
-    userId: 0,
-    data: [],
-  },
   setUser: (user: UserEntity) => set(() => ({ user })),
-  setLoading: (loading: boolean) =>
-    set(() => ({
-      loading,
-    })),
-  setClipboard: (clipboard: UserClipboardEntity) =>
-    set(() => ({
-      clipboard,
-    })),
-  getClipboard: async () => {
-    set(() => ({ loading: true }))
+  getUser: async () => {
+    set({ loading: true })
     try {
-      const clipboard = await appActions.getClipboard()
-      set(() => ({ clipboard }))
+      const { user, session } = await appActions.getSession()
+      cookie.set("session", session, {
+        expires: new Date(user.expiresAt),
+      })
+      set({ user })
     } catch (error) {}
-    set(() => ({ loading: false }))
+    set({ loading: false })
   },
+  setLoading: (loading: boolean) => set({ loading }),
 }))
 
 export default useUserStore

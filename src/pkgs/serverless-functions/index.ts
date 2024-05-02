@@ -1,8 +1,13 @@
 import * as userController from "./controller/user"
 import routes from "./routes"
 
-routes.add("/session", userController.getSession)
-routes.add("/clipboard/action", userController.userClipboardAction)
-routes.add("/clipboard", userController.getClipboard)
+routes.add("/user/session", userController.getSession)
+
+routes.add("/user/clipboard/action", userController.userClipboardAction)
+routes.add("/user/clipboard", userController.getClipboard)
+
+routes.add("/user/links/create", userController.createLink)
+routes.add("/user/links/delete", userController.createLink)
+routes.add("/user/links", userController.getLinkList)
 
 export default routes.createHandler()

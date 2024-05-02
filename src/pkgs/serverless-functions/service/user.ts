@@ -7,6 +7,7 @@ import User from "./../../../entity/user"
 import { withKeyPrefix } from "./../../../utils/key"
 import { randomString } from "./../../../utils/string"
 import * as userClipboardService from "./userClipboard"
+import * as userLinkService from "./userLink"
 
 const generateUserId = async (): Promise<number> => {
   const sub = randomString(5, "", "1234567890")
@@ -97,8 +98,13 @@ export const userClipboardAction = async (request: VercelRequest): Promise<UserL
 }
 
 export const createLink = async (request: VercelRequest): Promise<UserLinkResponse> => {
-  return Promise.resolve({
-    linkedUserId: 0,
-    userId: 0,
-  })
+  const session = await getSession(request.cookies.session)
+  const linkedUserId = request.query.linkedUserId
+
+  return (await userLinkService.create(session.user.id, toNumber(linkedUserId))).data
+}
+
+export const getLinkList = async (request: VercelRequest): Promise<UserLinkResponse[]> => {
+  const session = await getSession(request.cookies.session)
+  return await userLinkService.getList(session.user.id)
 }

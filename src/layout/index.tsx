@@ -1,10 +1,8 @@
 "use client"
 
-import { UserEntity } from "@/entity/types/user"
 import useUserStore from "@/store/user"
+import { useUserClipboardStore } from "@/store/userClipboard"
 import useDidMount from "beautiful-react-hooks/useDidMount"
-import cookie from "js-cookie"
-import * as appActions from "../app/action"
 import Content from "./content"
 import Header from "./header"
 
@@ -13,25 +11,12 @@ type LayoutProps = {
 }
 
 const Layout = ({ children }: LayoutProps) => {
-  const { setUser, setLoading, getClipboard } = useUserStore()
-
-  const getSession = async () => {
-    const res = await appActions.getSession()
-    cookie.set("session", res.session, {
-      expires: new Date(res.user.expiresAt),
-    })
-    setUser(res.user as UserEntity)
-    await getClipboard()
-  }
+  const { getUser } = useUserStore()
+  const getClipboard = useUserClipboardStore((s) => s.getClipboard)
 
   const init = async () => {
-    setLoading(true)
-    try {
-      await getSession()
-    } catch (error) {
-      throw error
-    }
-    setLoading(false)
+    await getUser()
+    await getClipboard()
   }
 
   useDidMount(() => {

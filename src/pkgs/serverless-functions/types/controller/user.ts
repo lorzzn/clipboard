@@ -2,7 +2,7 @@ import { UserEntity } from "@/entity/types/user"
 import { UserClipboardEntity } from "@/entity/userClipboard"
 import { UserLinkEntity } from "@/entity/userLink"
 
-interface UserData extends Omit<UserEntity, "expiresAt"> {
+export interface UserData extends Omit<UserEntity, "expiresAt"> {
   expiresAt: string | Date
 }
 

@@ -1,9 +1,9 @@
-import { mapStruct } from "@/utils/struct"
 import { withKeyPrefix } from "../utils/key"
+import { mapStruct } from "../utils/struct"
 
 export type UserLinkEntity = {
   userId?: number
-  linkedUserId?: number
+  linkedUserId?: number | string
 }
 
 export type UserLinkEntityConfig = {
@@ -22,6 +22,10 @@ class UserLink {
 
   update(config: UserLinkEntityConfig) {
     mapStruct(this.data, config)
+  }
+
+  get baseKey() {
+    return withKeyPrefix("user", this.data.userId, "links")
   }
 
   get key() {

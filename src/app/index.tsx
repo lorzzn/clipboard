@@ -2,13 +2,13 @@
 
 import AddTextButton from "@/components/AddTextButton"
 import TextItem from "@/components/TextItem"
-import useUserStore from "@/store/user"
+import useUserClipboardStore from "@/store/userClipboard"
 import { twclx } from "@/utils/twclx"
 import { Progress } from "@chakra-ui/react"
 import { When } from "react-if"
 
 const App = () => {
-  const { clipboard, loading, getClipboard } = useUserStore()
+  const { clipboard, loading, getClipboard } = useUserClipboardStore()
 
   return (
     <div className={twclx(["flex flex-col relative"])}>

@@ -57,19 +57,19 @@ const Header = () => {
                 <Button
                   as={Link}
                   onClick={onClose}
-                  href={"/devices"}
+                  href={"/links"}
                   variant={"ghost"}
                   rounded={"none"}
                   size={"lg"}
                   className="!justify-start space-x-2"
                 >
                   <RiDeviceFill size={"1.2rem"} />
-                  <span>Devices</span>
+                  <span>Links</span>
                 </Button>
               </div>
 
               <When condition={user.id}>
-                <span className="text-sm text-center opacity-60">User ID: {user.id}</span>
+                <span className="text-sm text-center opacity-60">ID: {user.id}</span>
               </When>
             </DrawerBody>
           </DrawerContent>
