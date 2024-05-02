@@ -1,5 +1,5 @@
 import useSingleToast from "@/hooks/useSingleToast"
-import { Button, Textarea, useDisclosure } from "@chakra-ui/react"
+import { Button, Show, Textarea, useDisclosure } from "@chakra-ui/react"
 import { RiAddLine, RiCloseLine } from "@remixicon/react"
 import { useState } from "react"
 import { Else, If, Then } from "react-if"
@@ -58,14 +58,23 @@ const AddTextButton = ({ onSuccess }: AddTextButtonProps) => {
             size={"lg"}
             onChange={(e) => setTextValue(e.target.value)}
           />
+          <Show below={"md"}>
+            <div className="flex">
+              <Button onClick={handleReadFromClipboard} className="flex-1">
+                Read from clipboard
+              </Button>
+            </div>
+          </Show>
           <div className="flex items-center space-x-3">
             <Button className="space-x-1" colorScheme="gray" onClick={onClose}>
               <RiCloseLine />
               <span>Cancel</span>
             </Button>
-            <Button onClick={handleReadFromClipboard} className="flex-1">
-              Read from clipboard
-            </Button>
+            <Show above="md">
+              <Button onClick={handleReadFromClipboard} className="flex-1">
+                Read from clipboard
+              </Button>
+            </Show>
             <Button
               onClick={handleSave}
               className="flex-1"

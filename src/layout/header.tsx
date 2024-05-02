@@ -17,6 +17,7 @@ import {
   useColorMode,
   useDisclosure,
 } from "@chakra-ui/react"
+import { css } from "@emotion/css"
 import { RiDeviceFill, RiMenuLine, RiMoonFill, RiSunFill } from "@remixicon/react"
 import Link from "next/link"
 import { useRef } from "react"
@@ -31,7 +32,9 @@ const Header = () => {
     <div
       className={twclx([
         "flex items-center shadow justify-between px-6 py-2 sticky top-0 z-50 backdrop-blur-3xl bg-opacity-80",
-        colorMode === "dark" ? "bg-gray-900" : "bg-gray-50",
+        css`
+          background-color: var(--chakra-colors-chakra-body-bg);
+        `,
       ])}
     >
       <div className="flex items-center space-x-1">
