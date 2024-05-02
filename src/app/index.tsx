@@ -4,7 +4,8 @@ import AddTextButton from "@/components/AddTextButton"
 import TextItem from "@/components/TextItem"
 import { ClipboardEntity } from "@/entity/clipboard"
 import { UserEntity } from "@/entity/types/user"
-import { Button, Progress } from "@chakra-ui/react"
+import { twclx } from "@/utils/twclx"
+import { Progress } from "@chakra-ui/react"
 import useDidMount from "beautiful-react-hooks/useDidMount"
 import cookie from "js-cookie"
 import { useState } from "react"
@@ -51,14 +52,18 @@ const App = () => {
   })
 
   return (
-    <div className="flex flex-col relative">
+    <div className={twclx(["flex flex-col relative"])}>
       <When condition={loading}>
         <Progress size="xs" isIndeterminate className="!absolute top-0 left-0 right-0" />
       </When>
 
       <div className="flex flex-col space-y-2 pt-3">
-        {clipboard.data.map((item) => {
-          return <TextItem key={item}>{item}</TextItem>
+        {clipboard.data.map((item, index) => {
+          return (
+            <TextItem key={index} index={index} onDeleteSuccess={() => getClipboard()}>
+              {item}
+            </TextItem>
+          )
         })}
       </div>
 

@@ -62,7 +62,7 @@ export const getClipboard = async (id: number): Promise<ClipboardEntity> => {
   return clipboard.data
 }
 
-export const action = async (id: number, type: clipboardActionType, text: string): Promise<ClipboardEntity> => {
+export const action = async (id: number, type: clipboardActionType, value: string): Promise<ClipboardEntity> => {
   const clipboard = new Clipboard({ id })
   const target = await storage.getItem<ClipboardEntity>(clipboard.key)
 
@@ -76,18 +76,18 @@ export const action = async (id: number, type: clipboardActionType, text: string
 
   switch (type) {
     case "add":
-      clipboardData.push(text)
+      clipboardData.push(value)
       break
 
     case "delete":
-      clipboardData = clipboardData.filter((item) => item !== text)
+      clipboardData.splice(toNumber(value), 1)
       break
 
     case "reset":
       clipboardData = []
       break
   }
-  
+
   clipboard.update({ data: clipboardData })
   await storage.setItem(clipboard.key, clipboard.data)
 

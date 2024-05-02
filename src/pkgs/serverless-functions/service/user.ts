@@ -97,7 +97,7 @@ export const getClipboard = async (request: VercelRequest): Promise<ClipboardRes
 export const clipboardAction = async (request: VercelRequest): Promise<ClipboardResponse> => {
   const session = await getSession(request.cookies.session)
   const type = request.query.type as clipboardService.clipboardActionType
-  const text = Buffer.from(toString(request.query.data), "base64").toString("utf-8")
+  const value = Buffer.from(toString(request.query.data), "base64").toString("utf-8")
 
-  return await clipboardService.action(session.user.clipboardId, type, text)
+  return await clipboardService.action(session.user.clipboardId, type, value)
 }
