@@ -39,7 +39,7 @@ const AddTextButton = ({ onSuccess }: AddTextButtonProps) => {
   const handleSave = async () => {
     setSaveLoading(true)
     try {
-      await appActions.clipboardAction("add", textValue)
+      await appActions.userClipboardAction("add", textValue)
       onSuccess?.()
       onClose()
     } catch (error) {}

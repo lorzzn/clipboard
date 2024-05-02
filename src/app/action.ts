@@ -1,7 +1,7 @@
 "use server"
 
-import { ClipboardEntity } from "@/entity/clipboard"
-import { clipboardActionType } from "@/pkgs/serverless-functions/service/clipboard"
+import { UserClipboardEntity } from "@/entity/userClipboard"
+import { UserClipboardActionType } from "@/pkgs/serverless-functions/service/userClipboard"
 import { SessionResponse } from "@/pkgs/serverless-functions/types/controller/user"
 import { sapi } from "@/utils/sapi"
 import { buildQuery } from "@/utils/url"
@@ -9,9 +9,9 @@ import { toString } from "lodash"
 
 export const getSession = async () => (await sapi("/session")).json() as Promise<SessionResponse>
 
-export const getClipboard = async () => (await sapi(`/clipboard`)).json() as Promise<ClipboardEntity>
+export const getClipboard = async () => (await sapi(`/clipboard`)).json() as Promise<UserClipboardEntity>
 
-export const clipboardAction = async (type: clipboardActionType, value: string | number) => {
+export const userClipboardAction = async (type: UserClipboardActionType, value: string | number) => {
   const b64 = Buffer.from(toString(value), "utf-8").toString("base64")
   const q = buildQuery({
     type,

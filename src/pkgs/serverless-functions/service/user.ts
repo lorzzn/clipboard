@@ -1,14 +1,12 @@
 import { VercelRequest } from "@vercel/node"
 import { random, toNumber, toString } from "lodash"
-import UserRelation from "../../../entity/userRelation"
-import { ClipboardResponse } from "../types/controller/clipboard"
-import { SessionResponse } from "../types/controller/user"
+import { SessionResponse, UserLinkResponse } from "../types/controller/user"
 import { encrypt, getSession, getTokenExpireDate, sessionBlacklistPrefix, tokenDuration } from "../utils/jwt"
 import storage from "../utils/storage"
 import User from "./../../../entity/user"
 import { withKeyPrefix } from "./../../../utils/key"
 import { randomString } from "./../../../utils/string"
-import * as clipboardService from "./clipboard"
+import * as userClipboardService from "./userClipboard"
 
 const generateUserId = async (): Promise<number> => {
   const sub = randomString(5, "", "1234567890")
@@ -27,15 +25,15 @@ const generateUserId = async (): Promise<number> => {
 export const createSession = async (request: VercelRequest): Promise<SessionResponse> => {
   const ua = request.headers["user-agent"]
   const ip = request.headers["x-forwarded-for"]
-  const clipboard = await clipboardService.create()
 
   const user = new User({
     id: await generateUserId(),
     expiresAt: getTokenExpireDate(),
-    clipboardId: clipboard.data.id,
     ua,
     ip,
   })
+
+  await userClipboardService.create(user.data.id)
 
   // create record in redis
   await storage.setItem(user.key, user.data, {
@@ -65,19 +63,12 @@ export const updateSession = async (request: VercelRequest): Promise<SessionResp
   user.update({ ua, ip, expiresAt: session.expires })
   session.user = user.data
 
-  // refresh clipboard ttl
-  try {
-    await clipboardService.refreshTTL(session.user.clipboardId)
-  } catch (error) {
-    const clipboard = await clipboardService.create()
-    session.user.clipboardId = clipboard.data.id
-  }
-
   // update record
   await storage.setItem(user.key, user.data, {
     ttl: tokenDuration,
   })
 
+  // add old session to blacklist
   await storage.setItem(withKeyPrefix(sessionBlacklistPrefix, _session), 1, {
     ttl: tokenDuration,
   })
@@ -88,44 +79,26 @@ export const updateSession = async (request: VercelRequest): Promise<SessionResp
   }
 }
 
-export const getClipboard = async (request: VercelRequest): Promise<ClipboardResponse> => {
+export const getClipboard = async (request: VercelRequest): Promise<UserLinkResponse> => {
   const session = await getSession(request.cookies.session)
-  const data = await clipboardService.getClipboard(session.user.clipboardId)
-
-  return data
+  try {
+    return (await userClipboardService.getClipboard(session.user.id)).data
+  } catch (error) {
+    return (await userClipboardService.create(session.user.id)).data
+  }
 }
 
-export const clipboardAction = async (request: VercelRequest): Promise<ClipboardResponse> => {
+export const userClipboardAction = async (request: VercelRequest): Promise<UserLinkResponse> => {
   const session = await getSession(request.cookies.session)
-  const type = request.query.type as clipboardService.clipboardActionType
+  const type = request.query.type as userClipboardService.UserClipboardActionType
   const value = Buffer.from(toString(request.query.data), "base64").toString("utf-8")
 
-  return await clipboardService.action(session.user.clipboardId, type, value)
+  return await userClipboardService.action(session.user.id, type, value)
 }
 
-export const createRelate = async (request: VercelRequest) => {
-  const session = await getSession(request.cookies.session)
-  const userId = toNumber(request.query.userId)
-
-  const user = new User({ id: userId })
-  const exist = await storage.hasItem(user.key)
-
-  if (!exist) {
-    throw new Error("User not found")
-  }
-
-  const ur = new UserRelation({
-    userId: userId,
-    relatedUserId: session.user.id,
+export const createLink = async (request: VercelRequest): Promise<UserLinkResponse> => {
+  return Promise.resolve({
+    linkedUserId: 0,
+    userId: 0,
   })
-
-  const ttl = 60 * 60
-  await storage.setItem(ur.key, ur.data, {
-    ttl,
-  })
-  return {
-    userId: userId,
-    relatedUserId: session.user.id,
-    ttl,
-  }
 }

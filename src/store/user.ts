@@ -1,4 +1,4 @@
-import { ClipboardEntity } from "@/entity/clipboard"
+import { UserClipboardEntity } from "@/entity/userClipboard"
 import { UserEntity } from "@/entity/types/user"
 import { create } from "zustand"
 import * as appActions from "../app/action"
@@ -8,8 +8,8 @@ type UserStoreType = {
   loading: boolean
   setUser: (user: UserEntity) => void
   setLoading: (loading: boolean) => void
-  clipboard: ClipboardEntity
-  setClipboard: (clipboard: ClipboardEntity) => void
+  clipboard: UserClipboardEntity
+  setClipboard: (clipboard: UserClipboardEntity) => void
   getClipboard: () => Promise<void>
 }
 
@@ -23,7 +23,7 @@ const useUserStore = create<UserStoreType>((set) => ({
   },
   loading: true,
   clipboard: {
-    id: 0,
+    userId: 0,
     data: [],
   },
   setUser: (user: UserEntity) => set(() => ({ user })),
@@ -31,7 +31,7 @@ const useUserStore = create<UserStoreType>((set) => ({
     set(() => ({
       loading,
     })),
-  setClipboard: (clipboard: ClipboardEntity) =>
+  setClipboard: (clipboard: UserClipboardEntity) =>
     set(() => ({
       clipboard,
     })),

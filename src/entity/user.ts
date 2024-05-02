@@ -1,5 +1,6 @@
 import { withKeyPrefix } from "./../utils/key"
 import { mapStruct } from "./../utils/struct"
+import UserClipboard from "./userClipboard"
 import { UserEntity } from "./types/user"
 
 export type UserEntityConfig = {
@@ -9,7 +10,6 @@ export type UserEntityConfig = {
 class User {
   data: UserEntity = {
     id: 0,
-    clipboardId: 0,
     ip: "",
     ua: "",
     expiresAt: new Date(0),
@@ -25,6 +25,10 @@ class User {
 
   get key() {
     return withKeyPrefix("user", this.data.id)
+  }
+
+  get clipboardKey() {
+    return new UserClipboard({ userId: this.data.id }).key
   }
 }
 

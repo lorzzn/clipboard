@@ -3,7 +3,7 @@ import redisDriver from "unstorage/drivers/redis"
 
 const storage = createStorage({
   driver: redisDriver({
-    url: "",
+    url: "redis://127.0.0.1:6379",
   }),
 })
 

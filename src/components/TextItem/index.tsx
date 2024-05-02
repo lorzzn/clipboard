@@ -104,7 +104,7 @@ const TextItem = ({ children, index, onDeleteSuccess }: TextItemProps) => {
 
     setDeleteLoading(true)
     try {
-      await appActions.clipboardAction("delete", index)
+      await appActions.userClipboardAction("delete", index)
       onDeleteSuccess?.()
     } catch (error) {}
     setDeleteLoading(false)
