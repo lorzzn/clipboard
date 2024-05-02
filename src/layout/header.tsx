@@ -1,5 +1,6 @@
 "use client"
 
+import { twclx } from "@/utils/twclx"
 import {
   Button,
   Drawer,
@@ -27,7 +28,12 @@ const Header = () => {
   const { colorMode, toggleColorMode } = useColorMode()
 
   return (
-    <div className="flex items-center shadow justify-between px-6 py-2">
+    <div
+      className={twclx([
+        "flex items-center shadow justify-between px-6 py-2 sticky top-0 z-50 backdrop-blur-3xl bg-opacity-80",
+        colorMode === "dark" ? "bg-gray-900" : "bg-gray-50",
+      ])}
+    >
       <div className="flex items-center space-x-1">
         <Button ref={btnRef} colorScheme="gray" variant={"ghost"} onClick={onOpen} size={"sm"}>
           <RiMenuLine size={"1rem"} />
