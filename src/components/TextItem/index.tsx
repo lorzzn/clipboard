@@ -70,6 +70,8 @@ const TextItem = ({ children, index, onDeleteSuccess }: TextItemProps) => {
   })
 
   const handleClick = () => {
+    x.set(0)
+    y.set(0)
     if (isBeingDragged) {
       return
     }
@@ -121,6 +123,7 @@ const TextItem = ({ children, index, onDeleteSuccess }: TextItemProps) => {
         dragElastic={1}
         style={{ x, y }}
         onDragEnd={handleDragEnd}
+        className={twclx([{ "z-50": isBeingDragged }])}
       >
         <Card>
           <CardBody
@@ -136,7 +139,7 @@ const TextItem = ({ children, index, onDeleteSuccess }: TextItemProps) => {
 
       <When condition={isBeingDragged}>
         <Portal>
-          <div className="fixed bottom-9 w-full flex justify-center pointer-events-none">
+          <div className="fixed bottom-9 w-full flex justify-center pointer-events-none z-50">
             <IconButton
               ref={deleteButtonRef}
               isLoading={deleteLoading}
