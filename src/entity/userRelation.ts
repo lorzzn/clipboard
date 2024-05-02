@@ -1,3 +1,4 @@
+import { withKeyPrefix } from "./../utils/key"
 import { assign } from "lodash"
 
 export type UserRelationData = {
@@ -13,6 +14,10 @@ class UserRelation {
 
   constructor(data: UserRelationData = {}) {
     assign(this.data, data)
+  }
+
+  get key() {
+    return withKeyPrefix("user-relation", this.data.userId, this.data.relatedUserId)
   }
 }
 

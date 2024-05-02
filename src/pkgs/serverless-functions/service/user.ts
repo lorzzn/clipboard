@@ -1,11 +1,12 @@
-import { withKeyPrefix } from "./../../../utils/key"
 import { VercelRequest } from "@vercel/node"
 import { random, toNumber, toString } from "lodash"
+import UserRelation from "../../../entity/userRelation"
 import { ClipboardResponse } from "../types/controller/clipboard"
 import { SessionResponse } from "../types/controller/user"
 import { encrypt, getSession, getTokenExpireDate, sessionBlacklistPrefix, tokenDuration } from "../utils/jwt"
 import storage from "../utils/storage"
 import User from "./../../../entity/user"
+import { withKeyPrefix } from "./../../../utils/key"
 import { randomString } from "./../../../utils/string"
 import * as clipboardService from "./clipboard"
 
@@ -100,4 +101,31 @@ export const clipboardAction = async (request: VercelRequest): Promise<Clipboard
   const value = Buffer.from(toString(request.query.data), "base64").toString("utf-8")
 
   return await clipboardService.action(session.user.clipboardId, type, value)
+}
+
+export const createRelate = async (request: VercelRequest) => {
+  const session = await getSession(request.cookies.session)
+  const userId = toNumber(request.query.userId)
+
+  const user = new User({ id: userId })
+  const exist = await storage.hasItem(user.key)
+
+  if (!exist) {
+    throw new Error("User not found")
+  }
+
+  const ur = new UserRelation({
+    userId: userId,
+    relatedUserId: session.user.id,
+  })
+
+  const ttl = 60 * 60
+  await storage.setItem(ur.key, ur.data, {
+    ttl,
+  })
+  return {
+    userId: userId,
+    relatedUserId: session.user.id,
+    ttl,
+  }
 }

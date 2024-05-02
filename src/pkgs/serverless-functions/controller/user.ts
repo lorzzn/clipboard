@@ -24,3 +24,7 @@ export const getClipboard: HandlerFunction = async (request, response) => {
 export const clipboardAction: HandlerFunction = async (request, response) => {
   response.status(200).json(await userServices.clipboardAction(request))
 }
+
+export const createRelate: HandlerFunction = async (request, response) => {
+  response.status(200).json(await userServices.createRelate(request))
+}
