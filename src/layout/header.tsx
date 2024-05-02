@@ -1,5 +1,6 @@
 "use client"
 
+import useUserStore from "@/store/user"
 import { twclx } from "@/utils/twclx"
 import {
   Button,
@@ -21,12 +22,13 @@ import { css } from "@emotion/css"
 import { RiDeviceFill, RiMenuLine, RiMoonFill, RiSunFill } from "@remixicon/react"
 import Link from "next/link"
 import { useRef } from "react"
-import { Case, Switch } from "react-if"
+import { Case, Switch, When } from "react-if"
 
 const Header = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const btnRef = useRef<HTMLButtonElement | null>(null)
   const { colorMode, toggleColorMode } = useColorMode()
+  const user = useUserStore((s) => s.user)
 
   return (
     <div
@@ -50,19 +52,25 @@ const Header = () => {
             <DrawerCloseButton />
             <DrawerHeader>Clipboard Next</DrawerHeader>
 
-            <DrawerBody className="!px-0 flex flex-col">
-              <Button
-                as={Link}
-                onClick={onClose}
-                href={"/devices"}
-                variant={"ghost"}
-                rounded={"none"}
-                size={"lg"}
-                className="!justify-start space-x-2"
-              >
-                <RiDeviceFill size={"1.2rem"} />
-                <span>Devices</span>
-              </Button>
+            <DrawerBody className="!px-0 flex flex-col justify-between">
+              <div className="flex flex-col">
+                <Button
+                  as={Link}
+                  onClick={onClose}
+                  href={"/devices"}
+                  variant={"ghost"}
+                  rounded={"none"}
+                  size={"lg"}
+                  className="!justify-start space-x-2"
+                >
+                  <RiDeviceFill size={"1.2rem"} />
+                  <span>Devices</span>
+                </Button>
+              </div>
+
+              <When condition={user.id}>
+                <span className="text-sm text-center opacity-60">User ID: {user.id}</span>
+              </When>
             </DrawerBody>
           </DrawerContent>
         </Drawer>
