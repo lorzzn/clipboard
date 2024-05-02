@@ -1,0 +1,63 @@
+{
+  "name": "clipboard-next",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "yarn vercel dev",
+    "lint": "next lint",
+    "format": "prettier --write .",
+    "build": "next build"
+  },
+  "dependencies": {
+    "@chakra-ui/react": "2.8.1",
+    "@emotion/css": "^11.11.2",
+    "@emotion/react": "^11",
+    "@emotion/styled": "^11",
+    "@remixicon/react": "^4.2.0",
+    "@vercel/node": "^3.0.28",
+    "beautiful-react-hooks": "^5.0.1",
+    "chalk": "^5.3.0",
+    "classnames": "^2.5.1",
+    "cookie": "^0.6.0",
+    "dayjs": "^1.11.10",
+    "framer-motion": "^6",
+    "ioredis": "^5.4.1",
+    "jose": "^5.2.4",
+    "js-cookie": "^3.0.5",
+    "lodash": "^4.17.21",
+    "next": "14.2.3",
+    "react": "^18",
+    "react-dom": "^18",
+    "react-if": "^4.1.5",
+    "request-ip": "^3.3.0",
+    "tailwind-merge": "^2.3.0",
+    "unstorage": "^1.10.2",
+    "vercel": "^34.1.4",
+    "zustand": "^4.5.2"
+  },
+  "devDependencies": {
+    "@types/cookie": "^0.6.0",
+    "@types/js-cookie": "^3.0.6",
+    "@types/lodash": "^4.17.0",
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "@types/request-ip": "^0.0.41",
+    "@vercel/kv": "0.2.1",
+    "eslint": "^8",
+    "eslint-config-next": "14.2.3",
+    "postcss": "^8",
+    "prettier": "3.2.5",
+    "prettier-plugin-organize-imports": "^3.2.4",
+    "tailwind-scrollbar": "^3.1.0",
+    "tailwindcss": "^3.4.1",
+    "tsconfig-paths-webpack-plugin": "^4.1.0",
+    "typescript": "^5"
+  },
+  "resolutions": {
+    "string-width": "4.2.3"
+  },
+  "engines": {
+    "node": "20.x"
+  }
+}
