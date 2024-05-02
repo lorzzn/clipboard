@@ -1,10 +1,9 @@
+import useUserLinksStore from "@/store/userLinks"
 import { Button, HStack, PinInput, PinInputField, Text, useDisclosure } from "@chakra-ui/react"
 import { RiAddLine, RiCloseLine } from "@remixicon/react"
 import { toString } from "lodash"
 import { useMemo, useState } from "react"
 import { Else, If, Then } from "react-if"
-import * as appActions from "../../app/action"
-import useUserLinksStore from "@/store/userLinks"
 
 export type AddLinkButtonProps = {
   onSuccess?: () => void
@@ -15,7 +14,7 @@ const AddLinkButton = ({ onSuccess }: AddLinkButtonProps) => {
   const { isOpen, onOpen, onClose: _onClose } = useDisclosure()
   const [saveLoading, setSaveLoading] = useState(false)
 
-  const createLink = useUserLinksStore(s => s.createLink) 
+  const createLink = useUserLinksStore((s) => s.createLink)
 
   const valueIsOk = useMemo(() => toString(value).length === 6, [value])
 

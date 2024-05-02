@@ -1,7 +1,7 @@
 import { withKeyPrefix } from "./../utils/key"
 import { mapStruct } from "./../utils/struct"
-import UserClipboard from "./userClipboard"
 import { UserEntity } from "./types/user"
+import UserClipboard from "./userClipboard"
 
 export type UserEntityConfig = {
   [K in keyof UserEntity]?: any

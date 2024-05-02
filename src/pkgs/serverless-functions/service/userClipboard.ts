@@ -1,7 +1,7 @@
 import { toNumber } from "lodash"
+import UserClipboard, { UserClipboardEntity } from "../../../entity/userClipboard"
 import RuntimeError from "../../runtime-error"
 import storage from "../utils/storage"
-import UserClipboard, { UserClipboardEntity } from "../../../entity/userClipboard"
 
 export type UserClipboardActionType = "add" | "delete" | "reset"
 
@@ -27,7 +27,11 @@ export const getClipboard = async (userId: number): Promise<UserClipboard> => {
   return clipboard
 }
 
-export const action = async (userId: number, type: UserClipboardActionType, value: string): Promise<UserClipboardEntity> => {
+export const action = async (
+  userId: number,
+  type: UserClipboardActionType,
+  value: string,
+): Promise<UserClipboardEntity> => {
   const clipboard = new UserClipboard({ userId })
   const target = await storage.getItem<UserClipboardEntity>(clipboard.key)
 

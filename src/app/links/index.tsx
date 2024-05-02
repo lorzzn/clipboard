@@ -19,7 +19,9 @@ const Links = () => {
 
   return (
     <div className={twclx(["flex flex-col relative"])}>
-      <Text fontWeight={"bold"} fontSize={"2xl"}>Linked IDs</Text>
+      <Text fontWeight={"bold"} fontSize={"2xl"}>
+        Linked IDs
+      </Text>
       <When condition={loading}>
         <Progress size="xs" isIndeterminate className="!absolute top-0 left-0 right-0" />
       </When>

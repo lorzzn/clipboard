@@ -1,7 +1,7 @@
-import { withKeyPrefix } from "./../../../utils/key"
 import dayjs from "dayjs"
 import { JWTPayload, SignJWT, jwtVerify } from "jose"
 import { UserEntity } from "../../../entity/types/user"
+import { withKeyPrefix } from "./../../../utils/key"
 import storage from "./storage"
 
 export const secretKey = "a very secret key, definitely"

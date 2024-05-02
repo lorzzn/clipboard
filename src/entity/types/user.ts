@@ -1,4 +1,3 @@
-
 export type UserEntity = {
   id: number
   ip: string
