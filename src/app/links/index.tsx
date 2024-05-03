@@ -12,9 +12,13 @@ import { When } from "react-if"
 
 const Links = () => {
   const { links, getLinks, loading } = useUserLinksStore()
+  const ok = useUserStore((state) => state.computed.ok)
   const { showToast } = useSingleToast()
 
   useDidMount(() => {
+    if (ok) {
+      getLinks()
+    }
     useUserStore.subscribe((state) => {
       if (state.computed.ok) {
         getLinks()

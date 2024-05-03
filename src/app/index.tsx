@@ -11,8 +11,12 @@ import { When } from "react-if"
 
 const App = () => {
   const { clipboard, loading, getClipboard } = useUserClipboardStore()
+  const ok = useUserStore((s) => s.computed.ok)
 
   useDidMount(() => {
+    if (ok) {
+      getClipboard()
+    }
     useUserStore.subscribe((state) => {
       if (state.computed.ok) {
         getClipboard()
