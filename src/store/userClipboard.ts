@@ -1,7 +1,7 @@
 import { UserClipboardEntity } from "@/entity/userClipboard"
+import mitter from "@/utils/mitter"
 import { create } from "zustand"
 import * as appActions from "../app/action"
-import mitter from "@/utils/mitter"
 
 type UserClipboardStoreType = {
   loading: boolean

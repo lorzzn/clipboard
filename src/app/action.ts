@@ -13,7 +13,7 @@ export const getSession = async () => {
   if (response.ok) {
     return {
       ok: response.ok,
-      data: await response.json() as SessionResponse,
+      data: (await response.json()) as SessionResponse,
     }
   } else {
     return {
@@ -29,7 +29,7 @@ export const getUserClipboard = async () => {
   if (response.ok) {
     return {
       ok: response.ok,
-      data: await response.json() as UserClipboardResponse,
+      data: (await response.json()) as UserClipboardResponse,
     }
   } else {
     return {
