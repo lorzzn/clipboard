@@ -1,4 +1,5 @@
 import UserLink, { UserLinkEntity } from "../../../entity/userLink"
+import RuntimeError from "../../runtime-error"
 import storage from "../utils/storage"
 
 export const create = async (userId: number, linkedUserId: number): Promise<UserLink> => {
@@ -42,7 +43,13 @@ export const updateLink = async (userId: number, linkedUserId: number) => {
   })
 
   if (!(await storage.hasItem(linkFromHere.key))) {
-    throw new Error("User link not found")
+    throw new RuntimeError({
+      message: "User link not found",
+      toast: {
+        title: "You are not linked with this user",
+        status: "error",
+      },
+    })
   }
 
   const linkFromThere = new UserLink({

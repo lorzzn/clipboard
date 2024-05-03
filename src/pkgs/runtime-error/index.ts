@@ -1,15 +1,17 @@
+import { UseToastOptions } from "@chakra-ui/react"
+
 export type RuntimeErrorConfig = {
   message?: string
-  toast?: boolean
+  toast?: UseToastOptions
 }
 
 class RuntimeError extends Error {
-  toast: boolean = false
+  toast: UseToastOptions = {}
 
   constructor(config: RuntimeErrorConfig = {}) {
     super(config.message || "Runtime Error")
     this.name = "RuntimeError"
-    this.toast = config.toast || false
+    this.toast = { ...config.toast }
   }
 }
 

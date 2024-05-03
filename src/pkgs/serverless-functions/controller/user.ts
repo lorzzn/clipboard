@@ -1,5 +1,7 @@
+import RuntimeError from "../../runtime-error"
 import * as userServices from "../service/user"
 import { HandlerFunction } from "../types"
+import { ErrorResponse } from "../types/controller/common"
 
 export const createSession: HandlerFunction = async (request, response) => {
   response.status(200).json(await userServices.createSession(request))
@@ -41,6 +43,12 @@ export const getLinkedUserClipboard: HandlerFunction = async (request, response)
   try {
     response.status(200).json(await userServices.getLinkedUserClipboard(request))
   } catch (error) {
-    response.status(400).json({ message: "You have no rights to access this user's clipboard" })
+    if (error instanceof RuntimeError) {
+      response.status(500).json({
+        message: error.message,
+        toast: error.toast,
+      } as ErrorResponse)
+      return
+    }
   }
 }

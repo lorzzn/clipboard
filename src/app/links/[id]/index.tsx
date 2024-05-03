@@ -1,9 +1,7 @@
 "use client"
 
-import { getUserClipboard } from "@/app/action"
 import TextItem from "@/components/TextItem"
 import useSingleToast from "@/hooks/useSingleToast"
-import RuntimeError from "@/pkgs/runtime-error"
 import useUserStore from "@/store/user"
 import { twclx } from "@/utils/twclx"
 import { Progress, Text } from "@chakra-ui/react"
@@ -26,29 +24,28 @@ const LinkId = ({ id }: LinkIdProps) => {
   const [data, setData] = useState<string[]>([])
   const { showToast } = useSingleToast()
 
-  const init = async () => {
+  const getData = async () => {
     setLoading(true)
     try {
-      const { data } = await linksIdActions.getLinkedUserClipboard(id)
-      setData(data)
-    } catch (error) {
-      const message = (error as RuntimeError).message || "Get user clipboard failed"
-      showToast({
-        title: message,
-        status: "error",
-        isClosable: true,
-      })
-    }
+      const { data, ok } = await linksIdActions.getLinkedUserClipboard(id)
+      if (ok) {
+        setData(data.data)
+      } else {
+        if (data.toast) {
+          showToast(data.toast)
+        }
+      }
+    } catch (error) {}
     setLoading(false)
   }
 
   useDidMount(() => {
     if (ok) {
-      init()
+      getData()
     }
     useUserStore.subscribe((state) => {
       if (state.computed.ok) {
-        init()
+        getData()
       }
     })
   })
@@ -66,7 +63,7 @@ const LinkId = ({ id }: LinkIdProps) => {
       <div className="flex flex-col space-y-2 pt-3">
         {data.map((item, index) => {
           return (
-            <TextItem key={index} index={index} onDeleteSuccess={() => getUserClipboard()}>
+            <TextItem key={index} index={index} onDeleteSuccess={() => getData()}>
               {item}
             </TextItem>
           )
