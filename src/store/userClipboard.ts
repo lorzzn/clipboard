@@ -4,25 +4,21 @@ import * as appActions from "../app/action"
 
 type UserClipboardStoreType = {
   loading: boolean
-  setLoading: (loading: boolean) => void
-  clipboard: UserClipboardEntity
-  setClipboard: (clipboard: UserClipboardEntity) => void
-  getClipboard: () => Promise<void>
+  userClipboard: UserClipboardEntity
+  getUserClipboard: () => Promise<void>
 }
 
 export const useUserClipboardStore = create<UserClipboardStoreType>((set) => ({
   loading: true,
-  setLoading: (loading) => set({ loading }),
-  clipboard: {
+  userClipboard: {
     data: [],
     userId: 0,
   },
-  setClipboard: (clipboard: UserClipboardEntity) => set({ clipboard }),
-  getClipboard: async () => {
+  getUserClipboard: async () => {
     set({ loading: true })
     try {
-      const clipboard = await appActions.getClipboard()
-      set({ clipboard })
+      const userClipboard = await appActions.getUserClipboard()
+      set({ userClipboard })
     } catch (error) {}
     set({ loading: false })
   },

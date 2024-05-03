@@ -104,6 +104,13 @@ export const createLink = async (request: VercelRequest): Promise<UserLinkRespon
   return (await userLinkService.create(session.user.id, toNumber(linkedUserId))).data
 }
 
+export const deleteLink = async (request: VercelRequest): Promise<UserLinkResponse> => {
+  const session = await getSession(request.cookies.session)
+  const linkedUserId = request.query.linkedUserId
+
+  return (await userLinkService.deleteLink(session.user.id, toNumber(linkedUserId))).data
+}
+
 export const getLinkList = async (request: VercelRequest): Promise<UserLinkResponse[]> => {
   const session = await getSession(request.cookies.session)
   return await userLinkService.getList(session.user.id)

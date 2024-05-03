@@ -10,16 +10,16 @@ import useDidMount from "beautiful-react-hooks/useDidMount"
 import { When } from "react-if"
 
 const App = () => {
-  const { clipboard, loading, getClipboard } = useUserClipboardStore()
+  const { userClipboard, loading, getUserClipboard } = useUserClipboardStore()
   const ok = useUserStore((s) => s.computed.ok)
 
   useDidMount(() => {
     if (ok) {
-      getClipboard()
+      getUserClipboard()
     }
     useUserStore.subscribe((state) => {
       if (state.computed.ok) {
-        getClipboard()
+        getUserClipboard()
       }
     })
   })
@@ -31,9 +31,9 @@ const App = () => {
       </When>
 
       <div className="flex flex-col space-y-2 pt-3">
-        {clipboard.data.map((item, index) => {
+        {userClipboard.data.map((item, index) => {
           return (
-            <TextItem key={index} index={index} onDeleteSuccess={() => getClipboard()}>
+            <TextItem key={index} index={index} onDeleteSuccess={() => getUserClipboard()}>
               {item}
             </TextItem>
           )
@@ -42,7 +42,7 @@ const App = () => {
 
       <When condition={!loading}>
         <div className="pt-3">
-          <AddTextButton onSuccess={() => getClipboard()} />
+          <AddTextButton onSuccess={() => getUserClipboard()} />
         </div>
       </When>
     </div>

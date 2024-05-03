@@ -29,6 +29,10 @@ export const createLink: HandlerFunction = async (request, response) => {
   response.status(200).json(await userServices.createLink(request))
 }
 
+export const deleteLink: HandlerFunction = async (request, response) => {
+  response.status(200).json(await userServices.deleteLink(request))
+}
+
 export const getLinkList: HandlerFunction = async (request, response) => {
   response.status(200).json(await userServices.getLinkList(request))
 }
