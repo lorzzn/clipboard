@@ -1,3 +1,4 @@
+import UserLink from "../../../entity/userLink"
 import { VercelRequest } from "@vercel/node"
 import { random, toNumber, toString } from "lodash"
 import { SessionResponse, UserClipboardResponse, UserLinkResponse } from "../types/controller/user"
@@ -87,7 +88,12 @@ export const deleteUserById = async (userId: number): Promise<void> => {
   const keys = await storage.getKeys(user.key)
 
   keys.forEach(async (key) => {
-    await storage.removeItem(key)
+    if (key.includes("links")) {
+      const { userId, linkedUserId } = UserLink.getUserIdfromKey(key)
+      await userLinkService.deleteLink(userId, linkedUserId)
+    } else {
+      await storage.removeItem(key)
+    }
   })
   await storage.removeItem(user.key)
 }

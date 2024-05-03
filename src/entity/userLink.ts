@@ -38,6 +38,14 @@ class UserLink {
   get key() {
     return withKeyPrefix("user", this.data.userId, "links", this.data.linkedUserId)
   }
+
+  static getUserIdfromKey(key: string) {
+    const [, , userId, , linkedUserId] = key.split(":")
+    return {
+      userId: Number(userId),
+      linkedUserId: Number(linkedUserId),
+    }
+  }
 }
 
 export default UserLink
