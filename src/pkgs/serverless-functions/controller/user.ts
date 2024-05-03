@@ -29,6 +29,18 @@ export const createLink: HandlerFunction = async (request, response) => {
   response.status(200).json(await userServices.createLink(request))
 }
 
+export const deleteLink: HandlerFunction = async (request, response) => {
+  response.status(200).json(await userServices.deleteLink(request))
+}
+
 export const getLinkList: HandlerFunction = async (request, response) => {
   response.status(200).json(await userServices.getLinkList(request))
+}
+
+export const getLinkedUserClipboard: HandlerFunction = async (request, response) => {
+  try {
+    response.status(200).json(await userServices.getLinkedUserClipboard(request))
+  } catch (error) {
+    response.status(400).json({ message: "You have no rights to access this user's clipboard" })
+  }
 }

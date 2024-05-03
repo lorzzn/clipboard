@@ -1,12 +1,12 @@
+import UserLink from "@/entity/userLink"
 import useUserLinksStore from "@/store/userLinks"
 import { Button, HStack, PinInput, PinInputField, Text, useDisclosure } from "@chakra-ui/react"
 import { RiAddLine, RiCloseLine } from "@remixicon/react"
-import { toString } from "lodash"
 import { useMemo, useState } from "react"
 import { Else, If, Then } from "react-if"
 
 export type AddLinkButtonProps = {
-  onSuccess?: () => void
+  onSuccess?: (id: string) => void
 }
 
 const AddLinkButton = ({ onSuccess }: AddLinkButtonProps) => {
@@ -16,7 +16,7 @@ const AddLinkButton = ({ onSuccess }: AddLinkButtonProps) => {
 
   const createLink = useUserLinksStore((s) => s.createLink)
 
-  const valueIsOk = useMemo(() => toString(value).length === 6, [value])
+  const valueIsOk = useMemo(() => UserLink.validateLinkedUserId(value), [value])
 
   const onClose = () => {
     setValue("")
@@ -27,7 +27,7 @@ const AddLinkButton = ({ onSuccess }: AddLinkButtonProps) => {
     setSaveLoading(true)
     try {
       await createLink(value)
-      onSuccess?.()
+      onSuccess?.(value)
       onClose()
     } catch (error) {}
     setSaveLoading(false)

@@ -1,9 +1,11 @@
+import { toString } from "lodash"
 import { withKeyPrefix } from "../utils/key"
 import { mapStruct } from "../utils/struct"
 
 export type UserLinkEntity = {
   userId?: number
   linkedUserId?: number | string
+  status: 0 | 1
 }
 
 export type UserLinkEntityConfig = {
@@ -14,6 +16,7 @@ class UserLink {
   data: Required<UserLinkEntity> = {
     userId: 0,
     linkedUserId: 0,
+    status: 0,
   }
 
   constructor(config: UserLinkEntityConfig = {}) {
@@ -22,6 +25,10 @@ class UserLink {
 
   update(config: UserLinkEntityConfig) {
     mapStruct(this.data, config)
+  }
+
+  static validateLinkedUserId(value: string | number) {
+    return toString(value).length === 6
   }
 
   get baseKey() {

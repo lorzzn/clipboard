@@ -7,7 +7,8 @@ routes.add("/user/clipboard/action", userController.userClipboardAction)
 routes.add("/user/clipboard", userController.getClipboard)
 
 routes.add("/user/links/create", userController.createLink)
-routes.add("/user/links/delete", userController.createLink)
+routes.add("/user/links/delete", userController.deleteLink)
+routes.add("/user/links/clipboard", userController.getLinkedUserClipboard)
 routes.add("/user/links", userController.getLinkList)
 
 export default routes.createHandler()

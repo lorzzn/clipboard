@@ -1,6 +1,6 @@
 import { VercelRequest } from "@vercel/node"
 import { random, toNumber, toString } from "lodash"
-import { SessionResponse, UserLinkResponse } from "../types/controller/user"
+import { SessionResponse, UserClipboardResponse, UserLinkResponse } from "../types/controller/user"
 import { encrypt, getSession, getTokenExpireDate, sessionBlacklistPrefix, tokenDuration } from "../utils/jwt"
 import storage from "../utils/storage"
 import User from "./../../../entity/user"
@@ -80,16 +80,20 @@ export const updateSession = async (request: VercelRequest): Promise<SessionResp
   }
 }
 
-export const getClipboard = async (request: VercelRequest): Promise<UserLinkResponse> => {
-  const session = await getSession(request.cookies.session)
+export const getClipboardByUserID = async (userId: number): Promise<UserClipboardResponse> => {
   try {
-    return (await userClipboardService.getClipboard(session.user.id)).data
+    return (await userClipboardService.getClipboard(userId)).data
   } catch (error) {
-    return (await userClipboardService.create(session.user.id)).data
+    return (await userClipboardService.create(userId)).data
   }
 }
 
-export const userClipboardAction = async (request: VercelRequest): Promise<UserLinkResponse> => {
+export const getClipboard = async (request: VercelRequest): Promise<UserClipboardResponse> => {
+  const session = await getSession(request.cookies.session)
+  return await getClipboardByUserID(session.user.id)
+}
+
+export const userClipboardAction = async (request: VercelRequest): Promise<UserClipboardResponse> => {
   const session = await getSession(request.cookies.session)
   const type = request.query.type as userClipboardService.UserClipboardActionType
   const value = Buffer.from(toString(request.query.data), "base64").toString("utf-8")
@@ -104,7 +108,22 @@ export const createLink = async (request: VercelRequest): Promise<UserLinkRespon
   return (await userLinkService.create(session.user.id, toNumber(linkedUserId))).data
 }
 
+export const deleteLink = async (request: VercelRequest): Promise<UserLinkResponse> => {
+  const session = await getSession(request.cookies.session)
+  const linkedUserId = request.query.linkedUserId
+
+  return (await userLinkService.deleteLink(session.user.id, toNumber(linkedUserId))).data
+}
+
 export const getLinkList = async (request: VercelRequest): Promise<UserLinkResponse[]> => {
   const session = await getSession(request.cookies.session)
   return await userLinkService.getList(session.user.id)
+}
+
+export const getLinkedUserClipboard = async (request: VercelRequest): Promise<UserClipboardResponse> => {
+  const session = await getSession(request.cookies.session)
+  const linkedUserId = toNumber(request.query.linkedUserId)
+  await userLinkService.updateLink(session.user.id, linkedUserId)
+
+  return getClipboardByUserID(linkedUserId)
 }
