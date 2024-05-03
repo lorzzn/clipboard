@@ -3,8 +3,8 @@ import storage from "../utils/storage"
 
 export const create = async (userId: number, linkedUserId: number): Promise<UserLink> => {
   const link = new UserLink({
-    userId,
-    linkedUserId,
+    userId: linkedUserId,
+    linkedUserId: userId,
   })
 
   await storage.setItem(link.key, link.data)

@@ -6,7 +6,7 @@ import { useMemo, useState } from "react"
 import { Else, If, Then } from "react-if"
 
 export type AddLinkButtonProps = {
-  onSuccess?: () => void
+  onSuccess?: (id: string) => void
 }
 
 const AddLinkButton = ({ onSuccess }: AddLinkButtonProps) => {
@@ -27,7 +27,7 @@ const AddLinkButton = ({ onSuccess }: AddLinkButtonProps) => {
     setSaveLoading(true)
     try {
       await createLink(value)
-      onSuccess?.()
+      onSuccess?.(value)
       onClose()
     } catch (error) {}
     setSaveLoading(false)

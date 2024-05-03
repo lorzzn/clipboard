@@ -2,18 +2,28 @@
 
 import AddTextButton from "@/components/AddTextButton"
 import TextItem from "@/components/TextItem"
+import useUserStore from "@/store/user"
 import useUserClipboardStore from "@/store/userClipboard"
 import { twclx } from "@/utils/twclx"
 import { Progress } from "@chakra-ui/react"
+import useDidMount from "beautiful-react-hooks/useDidMount"
 import { When } from "react-if"
 
 const App = () => {
   const { clipboard, loading, getClipboard } = useUserClipboardStore()
 
+  useDidMount(() => {
+    useUserStore.subscribe((state) => {
+      if (state.computed.ok) {
+        getClipboard()
+      }
+    })
+  })
+
   return (
     <div className={twclx(["flex flex-col relative"])}>
       <When condition={loading}>
-        <Progress size="xs" isIndeterminate className="!absolute top-0 left-0 right-0" />
+        <Progress size="xs" isIndeterminate className={twclx(["!absolute top-0 left-0 right-0"])} />
       </When>
 
       <div className="flex flex-col space-y-2 pt-3">

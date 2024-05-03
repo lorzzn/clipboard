@@ -1,7 +1,6 @@
 "use client"
 
 import useUserStore from "@/store/user"
-import { useUserClipboardStore } from "@/store/userClipboard"
 import useDidMount from "beautiful-react-hooks/useDidMount"
 import Content from "./content"
 import Header from "./header"
@@ -12,11 +11,9 @@ type LayoutProps = {
 
 const Layout = ({ children }: LayoutProps) => {
   const { getUser } = useUserStore()
-  const getClipboard = useUserClipboardStore((s) => s.getClipboard)
 
   const init = async () => {
     await getUser()
-    await getClipboard()
   }
 
   useDidMount(() => {

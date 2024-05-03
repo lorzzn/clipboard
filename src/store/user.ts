@@ -1,4 +1,3 @@
-import { UserEntity } from "@/entity/types/user"
 import { UserData } from "@/pkgs/serverless-functions/types/controller/user"
 import cookie from "js-cookie"
 import { create } from "zustand"
@@ -7,12 +6,15 @@ import * as appActions from "../app/action"
 type UserStoreType = {
   user: UserData
   loading: boolean
-  setUser: (user: UserEntity) => void
+  done: boolean
+  hasError: boolean
   getUser: () => Promise<void>
-  setLoading: (loading: boolean) => void
+  computed: {
+    ok: boolean
+  }
 }
 
-const useUserStore = create<UserStoreType>((set) => ({
+const useUserStore = create<UserStoreType>((set, get) => ({
   user: {
     id: 0,
     clipboardId: 0,
@@ -21,7 +23,8 @@ const useUserStore = create<UserStoreType>((set) => ({
     ua: "",
   },
   loading: true,
-  setUser: (user: UserEntity) => set(() => ({ user })),
+  done: false,
+  hasError: false,
   getUser: async () => {
     set({ loading: true })
     try {
@@ -30,10 +33,16 @@ const useUserStore = create<UserStoreType>((set) => ({
         expires: new Date(user.expiresAt),
       })
       set({ user })
-    } catch (error) {}
-    set({ loading: false })
+    } catch (error) {
+      set({ hasError: true })
+    }
+    set({ loading: false, done: true })
   },
-  setLoading: (loading: boolean) => set({ loading }),
+  computed: {
+    get ok() {
+      return get().done && !get().hasError
+    },
+  },
 }))
 
 export default useUserStore
