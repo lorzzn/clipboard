@@ -34,6 +34,8 @@ export const createSession = async (request: VercelRequest): Promise<SessionResp
     ip,
   })
 
+  await deleteUserById(user.data.id)
+
   await userClipboardService.create(user.data.id)
 
   // create record in redis
@@ -80,18 +82,25 @@ export const updateSession = async (request: VercelRequest): Promise<SessionResp
   }
 }
 
+export const deleteUserById = async (userId: number): Promise<void> => {
+  const user = new User({ id: userId })
+  const keys = await storage.getKeys(user.key)
+
+  keys.forEach(async (key) => {
+    await storage.removeItem(key)
+  })
+  await storage.removeItem(user.key)
+}
+
 export const deleteUser = async (request: VercelRequest) => {
   const _session = request.cookies.session
   const session = await getSession(_session)
   const user = new User(session.user)
 
   // delete record
-  const keys = await storage.getKeys(user.key + ":*")
-  keys.forEach(async (key) => {
-    await storage.removeItem(key)
-  })
+  await deleteUserById(user.data.id)
 
-  // add old session to blacklist
+  // add session to blacklist
   await storage.setItem(withKeyPrefix(sessionBlacklistPrefix, _session), 1, {
     ttl: tokenDuration,
   })

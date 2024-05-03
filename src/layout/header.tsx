@@ -1,10 +1,10 @@
 "use client"
 
 import useUserStore from "@/store/user"
-import mitter from "@/utils/mitter"
 import { twclx } from "@/utils/twclx"
 import {
   Button,
+  Divider,
   Drawer,
   DrawerBody,
   DrawerCloseButton,
@@ -16,24 +16,25 @@ import {
   MenuItemOption,
   MenuList,
   MenuOptionGroup,
-  UseToastOptions,
+  Skeleton,
+  Text,
   useColorMode,
   useDisclosure,
 } from "@chakra-ui/react"
 import { css } from "@emotion/css"
-import { RiDeviceFill, RiMenuLine, RiMoonFill, RiRefreshFill, RiSunFill } from "@remixicon/react"
-import useDidMount from "beautiful-react-hooks/useDidMount"
+import { RiDeleteBinLine, RiDeviceFill, RiMenuLine, RiMoonFill, RiSunFill } from "@remixicon/react"
 import Link from "next/link"
 import { useRef } from "react"
-import { Case, Switch, When } from "react-if"
+import { Case, Switch } from "react-if"
 
 const Header = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const btnRef = useRef<HTMLButtonElement | null>(null)
   const { colorMode, toggleColorMode } = useColorMode()
-  const { user, deleteUser } = useUserStore((s) => ({
+  const { user, deleteUser, loading } = useUserStore((s) => ({
     user: s.user,
     deleteUser: s.deteleUser,
+    loading: s.loading,
   }))
 
   const handleDeleteUser = async () => {
@@ -63,8 +64,16 @@ const Header = () => {
             <DrawerCloseButton />
             <DrawerHeader>Clipboard Next</DrawerHeader>
 
-            <DrawerBody className="!px-0 flex flex-col justify-between">
-              <div className="flex flex-col">
+            <DrawerBody className="!px-0 flex flex-col">
+              <Divider />
+              <Skeleton isLoaded={!loading}>
+                <Text className="pl-6 py-3" fontSize={"md"} fontWeight={"medium"}>
+                  ID: {user.id}
+                </Text>
+              </Skeleton>
+              <Divider />
+
+              <div className="flex-1 flex flex-col justify-between">
                 <Button
                   as={Link}
                   onClick={onClose}
@@ -83,15 +92,12 @@ const Header = () => {
                   rounded={"none"}
                   size={"lg"}
                   className="!justify-start space-x-2"
+                  color={"red.600"}
                 >
-                  <RiRefreshFill size={"1.2rem"} />
+                  <RiDeleteBinLine size={"1.2rem"} />
                   <span>Delete this account</span>
                 </Button>
               </div>
-
-              <When condition={user.id}>
-                <span className="text-sm text-center opacity-60">ID: {user.id}</span>
-              </When>
             </DrawerBody>
           </DrawerContent>
         </Drawer>
