@@ -1,4 +1,5 @@
 import { UserLinkEntity } from "@/entity/userLink"
+import mitter from "@/utils/mitter"
 import { create } from "zustand"
 import * as linkActions from "./../app/links/action"
 
@@ -16,15 +17,24 @@ const useUserLinksStore = create<UserLinksStoreType>((set, get) => ({
   getLinks: async () => {
     set({ loading: true })
     try {
-      const links = await linkActions.getLinks()
-      set({ links })
+      const { ok, data } = await linkActions.getLinks()
+      if (ok) {
+        set({ links: data })
+      } else {
+        if (data.toast) {
+          mitter.emit("app:toast", data.toast)
+        }
+      }
     } catch (error) {}
     set({ loading: false })
   },
   deleteLink: async (linkedUserId: number | string) => {
     set({ loading: true })
     try {
-      await linkActions.deleteLink(linkedUserId)
+      const { ok, data } = await linkActions.deleteLink(linkedUserId)
+      if (!ok && data.toast) {
+        mitter.emit("app:toast", data.toast)
+      }
       await get().getLinks()
     } catch (error) {}
     set({ loading: false })
@@ -32,7 +42,10 @@ const useUserLinksStore = create<UserLinksStoreType>((set, get) => ({
   createLink: async (linkedUserId: number | string) => {
     set({ loading: true })
     try {
-      await linkActions.createLink(linkedUserId)
+      const { ok, data } = await linkActions.createLink(linkedUserId)
+      if (!ok && data.toast) {
+        mitter.emit("app:toast", data.toast)
+      }
       await get().getLinks()
     } catch (error) {}
     set({ loading: false })

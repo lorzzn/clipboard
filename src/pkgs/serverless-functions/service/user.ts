@@ -80,6 +80,28 @@ export const updateSession = async (request: VercelRequest): Promise<SessionResp
   }
 }
 
+export const deleteUser = async (request: VercelRequest) => {
+  const _session = request.cookies.session
+  const session = await getSession(_session)
+  const user = new User(session.user)
+
+  // delete record
+  const keys = await storage.getKeys(user.key + ":*")
+  keys.forEach(async (key) => {
+    await storage.removeItem(key)
+  })
+
+  // add old session to blacklist
+  await storage.setItem(withKeyPrefix(sessionBlacklistPrefix, _session), 1, {
+    ttl: tokenDuration,
+  })
+
+  return {
+    user: user.data,
+    session,
+  }
+}
+
 export const getClipboardByUserID = async (userId: number): Promise<UserClipboardResponse> => {
   try {
     return (await userClipboardService.getClipboard(userId)).data

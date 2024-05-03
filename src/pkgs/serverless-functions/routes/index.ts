@@ -1,6 +1,8 @@
 import { VercelRequest, VercelResponse } from "@vercel/node"
 import { toString } from "lodash"
+import RuntimeError from "../../runtime-error"
 import { HandlerFunction } from "../types"
+import { ErrorResponse } from "../types/controller/common"
 
 export type RoutesConfig = {
   baseUrl?: string
@@ -23,11 +25,20 @@ class Routes {
   }
 
   createHandler() {
-    return (request: VercelRequest, response: VercelResponse) => {
+    return async (request: VercelRequest, response: VercelResponse) => {
       for (const routePath of Array.from(this.routes.keys())) {
         const regex = new RegExp(routePath)
         if (regex.test(toString(request.url))) {
-          this.routes.get(routePath)?.(request, response)
+          try {
+            await this.routes.get(routePath)?.(request, response)
+          } catch (error) {
+            if (error instanceof RuntimeError) {
+              response.status(500).json({
+                message: error.message || "Server error",
+                toast: error.toast,
+              } as ErrorResponse)
+            }
+          }
           console.log("serverless-functions:", request.url, "->", routePath)
           return
         }

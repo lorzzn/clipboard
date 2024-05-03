@@ -1,6 +1,8 @@
 "use client"
 
 import useUserStore from "@/store/user"
+import mitter from "@/utils/mitter"
+import { UseToastOptions, useToast } from "@chakra-ui/react"
 import useDidMount from "beautiful-react-hooks/useDidMount"
 import Content from "./content"
 import Header from "./header"
@@ -11,8 +13,12 @@ type LayoutProps = {
 
 const Layout = ({ children }: LayoutProps) => {
   const { getUser } = useUserStore()
+  const toast = useToast()
 
   const init = async () => {
+    mitter.on("app:toast", (toastConfig) => {
+      toast(toastConfig as UseToastOptions)
+    })
     await getUser()
   }
 

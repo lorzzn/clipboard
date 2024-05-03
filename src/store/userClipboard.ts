@@ -1,6 +1,7 @@
 import { UserClipboardEntity } from "@/entity/userClipboard"
 import { create } from "zustand"
 import * as appActions from "../app/action"
+import mitter from "@/utils/mitter"
 
 type UserClipboardStoreType = {
   loading: boolean
@@ -17,8 +18,14 @@ export const useUserClipboardStore = create<UserClipboardStoreType>((set) => ({
   getUserClipboard: async () => {
     set({ loading: true })
     try {
-      const userClipboard = await appActions.getUserClipboard()
-      set({ userClipboard })
+      const { ok, data } = await appActions.getUserClipboard()
+      if (ok) {
+        set({ userClipboard: data })
+      } else {
+        if (data.toast) {
+          mitter.emit("app:toast", data.toast)
+        }
+      }
     } catch (error) {}
     set({ loading: false })
   },

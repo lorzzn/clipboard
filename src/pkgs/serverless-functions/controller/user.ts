@@ -1,7 +1,5 @@
-import RuntimeError from "../../runtime-error"
 import * as userServices from "../service/user"
 import { HandlerFunction } from "../types"
-import { ErrorResponse } from "../types/controller/common"
 
 export const createSession: HandlerFunction = async (request, response) => {
   response.status(200).json(await userServices.createSession(request))
@@ -17,6 +15,10 @@ export const getSession: HandlerFunction = async (request, response) => {
   } catch (error) {
     await createSession(request, response)
   }
+}
+
+export const deleteUser: HandlerFunction = async (request, response) => {
+  response.status(200).json(await userServices.deleteUser(request))
 }
 
 export const getClipboard: HandlerFunction = async (request, response) => {
@@ -40,15 +42,5 @@ export const getLinkList: HandlerFunction = async (request, response) => {
 }
 
 export const getLinkedUserClipboard: HandlerFunction = async (request, response) => {
-  try {
-    response.status(200).json(await userServices.getLinkedUserClipboard(request))
-  } catch (error) {
-    if (error instanceof RuntimeError) {
-      response.status(500).json({
-        message: error.message,
-        toast: error.toast,
-      } as ErrorResponse)
-      return
-    }
-  }
+  response.status(200).json(await userServices.getLinkedUserClipboard(request))
 }

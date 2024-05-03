@@ -1,6 +1,7 @@
 import dayjs from "dayjs"
 import { JWTPayload, SignJWT, jwtVerify } from "jose"
 import { UserEntity } from "../../../entity/types/user"
+import RuntimeError from "../../runtime-error"
 import { withKeyPrefix } from "./../../../utils/key"
 import storage from "./storage"
 
@@ -37,10 +38,22 @@ export async function decrypt(input: string): Promise<JWTSession> {
 export async function getSession(session: string, mustExist: boolean = true) {
   const isBlacked = await storage.hasItem(withKeyPrefix(sessionBlacklistPrefix, session))
   if (isBlacked) {
-    throw new Error("session blacklisted")
+    throw new RuntimeError({
+      message: "session expired",
+      toast: {
+        title: "Session expired",
+        status: "error",
+      },
+    })
   }
   if (mustExist && !session) {
-    throw new Error("session not found")
+    throw new RuntimeError({
+      message: "session not found",
+      toast: {
+        title: "Session not found",
+        status: "error",
+      },
+    })
   } else {
     return await decrypt(session)
   }

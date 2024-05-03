@@ -1,4 +1,5 @@
 import useSingleToast from "@/hooks/useSingleToast"
+import mitter from "@/utils/mitter"
 import { Button, Show, Textarea, useDisclosure } from "@chakra-ui/react"
 import { RiAddLine, RiCloseLine } from "@remixicon/react"
 import { useState } from "react"
@@ -39,9 +40,12 @@ const AddTextButton = ({ onSuccess }: AddTextButtonProps) => {
   const handleSave = async () => {
     setSaveLoading(true)
     try {
-      await appActions.userClipboardAction("add", textValue)
-      onSuccess?.()
-      onClose()
+      const { ok, data } = await appActions.userClipboardAction("add", textValue)
+      if (!ok && data.toast) {
+        mitter.emit("app:toast", data.toast)
+      }
+      ok && onSuccess?.()
+      ok && onClose()
     } catch (error) {}
     setSaveLoading(false)
   }

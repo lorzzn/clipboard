@@ -1,4 +1,5 @@
 import useSingleToast from "@/hooks/useSingleToast"
+import mitter from "@/utils/mitter"
 import { twclx } from "@/utils/twclx"
 import { Button, Card, CardBody, IconButton, Portal } from "@chakra-ui/react"
 import { RiDeleteBin5Line, RiDeleteBinLine } from "@remixicon/react"
@@ -104,8 +105,11 @@ const TextItem = ({ children, index, onDeleteSuccess }: TextItemProps) => {
 
     setDeleteLoading(true)
     try {
-      await appActions.userClipboardAction("delete", index)
-      onDeleteSuccess?.()
+      const { ok, data } = await appActions.userClipboardAction("delete", index)
+      if (!ok && data.toast) {
+        mitter.emit("app:toast", data.toast)
+      }
+      ok && onDeleteSuccess?.()
     } catch (error) {}
     setDeleteLoading(false)
   }

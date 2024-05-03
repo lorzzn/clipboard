@@ -1,6 +1,7 @@
 "use client"
 
 import useUserStore from "@/store/user"
+import mitter from "@/utils/mitter"
 import { twclx } from "@/utils/twclx"
 import {
   Button,
@@ -15,11 +16,13 @@ import {
   MenuItemOption,
   MenuList,
   MenuOptionGroup,
+  UseToastOptions,
   useColorMode,
   useDisclosure,
 } from "@chakra-ui/react"
 import { css } from "@emotion/css"
-import { RiDeviceFill, RiMenuLine, RiMoonFill, RiSunFill } from "@remixicon/react"
+import { RiDeviceFill, RiMenuLine, RiMoonFill, RiRefreshFill, RiSunFill } from "@remixicon/react"
+import useDidMount from "beautiful-react-hooks/useDidMount"
 import Link from "next/link"
 import { useRef } from "react"
 import { Case, Switch, When } from "react-if"
@@ -28,7 +31,15 @@ const Header = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const btnRef = useRef<HTMLButtonElement | null>(null)
   const { colorMode, toggleColorMode } = useColorMode()
-  const user = useUserStore((s) => s.user)
+  const { user, deleteUser } = useUserStore((s) => ({
+    user: s.user,
+    deleteUser: s.deteleUser,
+  }))
+
+  const handleDeleteUser = async () => {
+    await deleteUser()
+    onClose()
+  }
 
   return (
     <div
@@ -65,6 +76,16 @@ const Header = () => {
                 >
                   <RiDeviceFill size={"1.2rem"} />
                   <span>Links</span>
+                </Button>
+                <Button
+                  onClick={handleDeleteUser}
+                  variant={"ghost"}
+                  rounded={"none"}
+                  size={"lg"}
+                  className="!justify-start space-x-2"
+                >
+                  <RiRefreshFill size={"1.2rem"} />
+                  <span>Delete this account</span>
                 </Button>
               </div>
 
