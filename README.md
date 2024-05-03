@@ -8,6 +8,13 @@ First, run the development server:
 yarn dev
 ```
 
+# Environment variable
+
+| variable | description |
+| ------------------ | --------- |
+|SERVERLESS_BASEURL|Serverless api, use `http://localhost:PORT/api/f` for development, `PORT` usually is `3000`, depend on your config|
+|REDIS_URL|Redis url for your app, you can use [aiven.io](https://console.aiven.io/) redis or others|
+
 # introduction
 
 **PREVIEW** https://clipboardnext.vercel.app/
