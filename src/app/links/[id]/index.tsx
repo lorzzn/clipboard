@@ -17,8 +17,12 @@ type LinkIdProps = {
 }
 
 const LinkId = ({ id }: LinkIdProps) => {
-  const ok = useUserStore((state) => state.computed.ok)
-  const [loading, setLoading] = useState(false)
+  const { ok, loading: _loading } = useUserStore((state) => ({
+    ok: state.computed.ok,
+    loading: state.loading,
+  }))
+
+  const [loading, setLoading] = useState(_loading)
   const [data, setData] = useState<string[]>([])
   const { showToast } = useSingleToast()
 
