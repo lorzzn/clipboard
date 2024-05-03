@@ -50,7 +50,7 @@ const Links = () => {
       <div className="flex flex-col space-y-2 pt-3">
         {links.map((item, index) => {
           if (item.linkedUserId) {
-            return <LinkItem id={item.linkedUserId} key={index} />
+            return <LinkItem id={item.linkedUserId} status={item.status} key={index} />
           }
         })}
       </div>

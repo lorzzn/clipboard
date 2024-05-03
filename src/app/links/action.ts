@@ -1,10 +1,10 @@
 "use server"
 
-import { UserLinkEntity } from "@/entity/userLink"
+import { UserLinkResponse } from "@/pkgs/serverless-functions/types/controller/user"
 import { sapi } from "@/utils/sapi"
 import { buildQuery } from "@/utils/url"
 
-export const getLinks = async () => (await sapi("/user/links")).json() as Promise<UserLinkEntity[]>
+export const getLinks = async () => (await sapi("/user/links")).json() as Promise<UserLinkResponse[]>
 
 export const createLink = async (linkedUserId: number | string) => {
   const q = buildQuery({
