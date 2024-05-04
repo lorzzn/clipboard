@@ -12,7 +12,7 @@ yarn dev
 
 | variable | description |
 | ------------------ | --------- |
-|SERVERLESS_BASEURL|Serverless api, use `http://localhost:PORT/api/f` for development, `PORT` usually is `3000`, depend on your config|
+|SERVERLESS_BASEURL|Serverless api, use `http://localhost:PORT/api/f` for development, `PORT` usually is `3000`, depend on your config. In production mode, set it to your domain with `/api/f`|
 |REDIS_URL|Redis url for your app, you can use [aiven.io](https://console.aiven.io/) redis or others|
 
 # introduction
