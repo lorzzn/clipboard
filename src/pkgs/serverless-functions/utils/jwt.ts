@@ -10,7 +10,7 @@ export const key = new TextEncoder().encode(secretKey)
 
 export const sessionBlacklistPrefix = "session-blacklist"
 
-export const tokenDuration = 60 * 60 // (s) 60 minutes
+export const tokenDuration = 60 * 60 * 24 * 30 // (s) 30days
 export const getTokenExpireDate = () => {
   return dayjs().add(tokenDuration, "second").toDate()
 }
